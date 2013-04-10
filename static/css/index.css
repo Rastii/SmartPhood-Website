@@ -1,0 +1,34 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: #EDEAE3;
+}
+
+.recipe {
+	background-color: #86C543;
+	width: 30em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.recipe-header {
+	background-color: #34302D;
+	color: #EDEAE3;
+	padding-top: 1em;
+	height: 3em;
+}
+
+.recipe-header h2 {
+	margin: 0;
+	display: block;
+	float: left;
+	margin-left: 1em;
+}
+.recipe-header a {
+	display: block;
+	float: right;
+	margin-top: .4em;
+	margin-right: 1em;
+	text-decoration: none;
+	color: #EDEAE3;
+}

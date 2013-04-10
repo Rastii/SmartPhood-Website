@@ -14,6 +14,10 @@ def gen_api_key(username, salt):
     sha_hash.update(salt + ":" + username)
     return sha_hash.hexdigest()
 
+@application.route('/', methods=['GET'])
+def index_page():
+    return render_template('index.html')
+
 @application.route('/login', methods=['GET'])
 def login_page():
     return render_template('login.html')
@@ -70,7 +74,11 @@ def login_user():
             return '0'
     else:
         return '-1'
-    
+
+@application.route('/api/recipes', methods=['GET'])
+def get_recipes():
+    return '1'
+
 @application.route('/api/<search_term>', methods=['GET'])
 def get_ingredients(search_term):
     data = []
