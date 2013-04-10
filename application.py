@@ -14,9 +14,9 @@ def gen_api_key(username, salt):
     sha_hash.update(salt + ":" + username)
     return sha_hash.hexdigest()
 
-@application.route('/')
-def hello_world():
-    return "Hello world!"
+@application.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
 
 
 @application.route('/register', methods=['POST'])

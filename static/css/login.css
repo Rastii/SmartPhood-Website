@@ -1,0 +1,114 @@
+html, body {
+	background-color: #EDEAE3;
+	padding: 0;
+	margin: 0;
+}
+
+#login-container {
+	margin-top: 5em;
+	background-color: #86C543;
+	margin-left: auto;
+	margin-right: auto;
+	width: 35em;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.form-entry {
+	color: #34302D;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	height: 3em;
+}
+
+.form-entry label {
+	width: 10em;
+	display: block;
+	float: left;
+}
+
+.form-entry input {
+	display: block;
+	float: left;
+	width: 100%;
+	border: 3px solid #EDEAE3; 
+    -webkit-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    -moz-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
+}
+
+.form-entry button {
+	color: #EDEAE3;
+	background-color: #34302D;
+	width: 35%;
+	height: 2em;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #34302D;
+}
+
+.form-entry button:hover {
+	background-color: #EDEAE3;
+	color: #34302D;
+	border-color: #EDEAE3;
+}
+
+.form-entry button:target {
+	background-color: red;
+}
+
+.error-container {
+	color: #34302D;
+	height: 2em;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#login-header {
+	color: #EDEAE3;
+	text-align: center;
+	width: 100%;
+	height: 2em;
+	background-color: #34302D;
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 1em;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+#login-header {
+	padding-top: 1em;
+}
+
+#footer-container {
+	padding: 0;
+	position: fixed;
+	bottom: 0;
+	height: 8em;
+	width: 100%;
+	background-color: #34302D;
+	z-index: 2;
+	text-align: center;
+	color: #EDEAE3;
+}
+
+#footer-container a {
+	color: #EDEAE3;
+}
