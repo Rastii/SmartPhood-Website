@@ -13,6 +13,10 @@ html, body {
 	color: #34302D;
 }
 
+#header-container a {
+    color: #34302D;
+}
+
 #header-container h2 {
 	padding: 0;
 	margin: 0;
@@ -22,16 +26,18 @@ html, body {
 	margin-top: 3em;
 	padding-bottom: 5em;
 }
-.recipe-body {
-	width: 30em;
-}
+
 
 .recipe {
 	background-color: #86C543;
-	width: 30em;
+	width: 25em;
 	margin-top: 1em;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.recipe-body {
+    width: 100%;
 }
 
 .recipe-header {
@@ -81,9 +87,8 @@ html, body {
 .instructions {
 	background-color: #34302D;
 	color: #EDEAE3;
-	margin-left: 1em;
-	float: right;
-	width: 45%;
+	float: left;
+	width: 46%;
 	padding: 1em;
 }
 

@@ -5,11 +5,11 @@ var recipe_template = _.template(''+
 			'<span>By <%- author %></span>' +
 		'</section>' +
 		'<section class="recipe-body" hidden>' +
-			'<div class="ingredients">' +
+			'<div class="ingredients" hidden>' +
 				'<span><b>Ingredients</b></span>' +
 				'<ul></ul>' +
 			'</div>' + 
-			'<div class="instructions">' +
+			'<div class="instructions" hidden>' +
 				'<span><b>Instructions</b></span>' +
 				'<p><%- instructions %></p>' +
 			'</div>' + 
@@ -67,7 +67,12 @@ $(document).ready(function() {
 					.text(ingredient['name'] + "  x" + ingredient['amount']);
 				$ul.append($li);
 			})
-			$body.show('slide');
+			$body.slideToggle('fast', function() {
+                var $that = $this;
+                $this.find('.ingredients').show('slide', function() {
+                    $that.find('.instructions').show('slide');
+                });  
+            });
 		}
 		else {
 			$body.hide('slide');

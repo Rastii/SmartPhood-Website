@@ -4,10 +4,20 @@ from flask import Flask, request, session, redirect, flash, json, \
 from flask.ext.sqlalchemy import SQLAlchemy
 from hashlib import sha256 
 import bcrypt
+from functools import wraps
 
 application = flask.Flask(__name__)
 application.config.from_pyfile('application.cfg')
 db = SQLAlchemy(application)
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'auth' in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('login_page'))
+    return decorated_function
 
 def gen_api_key(username, salt):
     sha_hash = sha256()
@@ -15,8 +25,9 @@ def gen_api_key(username, salt):
     return sha_hash.hexdigest()
 
 @application.route('/', methods=['GET'])
+@login_required
 def index_page():
-    return render_template('index.html')
+    return render_template('index.html', user=session['auth'])
 
 @application.route('/login', methods=['GET'])
 def login_page():
@@ -47,6 +58,7 @@ def register_user():
                 'key': key
             })
             db.session.commit()
+            session['auth'] = request.form['username']
             return '1'
         except:
             return '-1' #error in the query... (user exists)
@@ -67,6 +79,7 @@ def login_user():
             print 'retrieved salt: ' + salt
             print 'retrieved hash: ' + password
             if(bcrypt.hashpw(request.form['password'], salt) == password):
+                session['auth'] = request.form['username']
                 return '1'
             else:
                 return '0'
@@ -74,6 +87,12 @@ def login_user():
             return '0'
     else:
         return '-1'
+
+@application.route('/logout', methods=['GET'])
+def logout():
+    if 'auth' in session:
+        session.pop('auth', None)
+    return redirect(url_for('login_page'))
 
 @application.route('/mobile/login', methods=['POST'])
 def login_mobile_user():
@@ -104,6 +123,7 @@ def login_mobile_user():
         return '-1'
 
 @application.route('/api/recipes', methods=['GET'])
+@login_required
 def get_recipes():
     data = []
     query = '''
@@ -180,6 +200,7 @@ def upload_recipes():
         abort(401)
 
 @application.route('/api/ingredients/<recipe_id>')
+@login_required
 def get_recipe_ingredients(recipe_id):
     data = []
     query = '''
@@ -204,7 +225,10 @@ def get_recipe_ingredients(recipe_id):
 def get_ingredients(search_term):
     data = []
     query = '''
-        SELECT name, calories FROM ingredients WHERE name LIKE :term
+        SELECT name, calories 
+        FROM search_ingredients 
+        WHERE name LIKE :term
+        ORDER BY name ASC
     '''
     try:
         projects = db.session.execute(query, {
