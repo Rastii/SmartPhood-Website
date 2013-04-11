@@ -31,7 +31,10 @@ def index_page():
 
 @application.route('/login', methods=['GET'])
 def login_page():
-    return render_template('login.html')
+    if 'auth' in session:
+        return redirect(url_for('index_page'))
+    else:
+        return render_template('login.html')
 
 
 @application.route('/register', methods=['POST'])
@@ -142,6 +145,31 @@ def get_recipes():
     except:
         return '-1'
 
+
+@application.route('/api/recipes/<ingredient>', methods=['GET'])
+@login_required
+def get_recipes_by_ingredient(ingredient):
+    data = []
+    query = '''
+        SELECT R.*
+        FROM recipes R, ingredients I
+        WHERE R.id=I.r_id AND I.name LIKE :ingredient
+    '''
+    try:
+        recipes = db.session.execute(query, {
+            'ingredient': '%'+ingredient+'%'   
+        })
+        for _id, name, instructions, author in recipes:
+            data.append({
+                'id': _id,
+                'name': name,
+                'instructions': instructions,
+                'author': author
+            })
+        return json.dumps(data)
+    except:
+        return '-1'
+
 def create_recipe(username, data):
     query = '''
         INSERT INTO recipes 
@@ -207,6 +235,7 @@ def get_recipe_ingredients(recipe_id):
         SELECT I.name, I.amount
         FROM ingredients I, recipes R
         WHERE I.r_id=:recipe_id AND I.r_id=R.id
+        ORDER BY I.name ASC
     '''
     try:
         ingredients = db.session.execute(query, {

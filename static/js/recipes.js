@@ -31,6 +31,20 @@ var getRecipes = function() {
 	return recipes;
 }
 
+
+var getRecipesByIng = function(ingredient) {
+	var recipes;
+	$.ajax({
+		url: '/api/recipes/' + ingredient,
+		dataType: 'json',
+		async: false,
+		success: function(data) {
+			recipes = data;
+		}
+	})
+	return recipes;
+}
+
 var getIngredients = function(recipeID) {
 	var ingredients;
 	$.ajax({
@@ -44,6 +58,8 @@ var getIngredients = function(recipeID) {
 	return ingredients;
 }
 
+
+
 var displayRecipes = function(recipes) {
 	var $container = $('#main-container');
 	_.each(recipes, function(recipe) {
@@ -54,7 +70,7 @@ var displayRecipes = function(recipes) {
 
 $(document).ready(function() {
 	displayRecipes(getRecipes());
-	$('.recipe').on('click', function() {
+	$(document).on('click', '.recipe', function() {
 		var $this = $(this);
 		var $body = $this.find('.recipe-body');
 		if($body.is(":hidden")) {
@@ -77,9 +93,12 @@ $(document).ready(function() {
 		else {
 			$body.hide('slide');
 		}
-		
-		//$(this).find('.recipe-body').show('slide');
+	});
 
-
-	})
+    $('#btn-search').on('click', function() {
+        var ingredient = $('input[name=ingredient]').val();
+        var data = getRecipesByIng(ingredient);
+        $('.recipe').remove();
+        displayRecipes(data);
+    });
 })
