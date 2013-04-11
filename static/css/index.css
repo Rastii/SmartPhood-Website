@@ -4,31 +4,94 @@ html, body {
 	background-color: #EDEAE3;
 }
 
+#header-container {
+	width: 100%;
+	height: 5em;
+	background-color: #86C543;
+	text-align: center;
+	padding-top: 1em;
+	color: #34302D;
+}
+
+#header-container h2 {
+	padding: 0;
+	margin: 0;
+}
+
+#main-container {
+	margin-top: 3em;
+	padding-bottom: 5em;
+}
+.recipe-body {
+	width: 30em;
+}
+
 .recipe {
 	background-color: #86C543;
 	width: 30em;
+	margin-top: 1em;
 	margin-left: auto;
 	margin-right: auto;
 }
 
 .recipe-header {
+	float: left;
+	margin-top: 0;
+	width: 100%;
 	background-color: #34302D;
 	color: #EDEAE3;
-	padding-top: 1em;
 	height: 3em;
+	padding-top: .5em;
+	padding-bottom: .5em;
 }
 
 .recipe-header h2 {
 	margin: 0;
+	width: 100%;
 	display: block;
 	float: left;
 	margin-left: 1em;
 }
-.recipe-header a {
+.recipe-header span {
 	display: block;
-	float: right;
-	margin-top: .4em;
-	margin-right: 1em;
-	text-decoration: none;
+	float: left;
+	margin-bottom: 0;
+	margin-left: 4em;
+}
+
+.ingredients {
+	color: #34302D;
+	padding: 1em;
+	width: 38%;
+	float: left;
+}
+
+.ingredients span {
+	display: block;
+	width: 100%;
+	border-bottom: 2px solid #34302D;
+}
+
+.ingredients ul {
+	color: #34302D;
+	list-style-type: none;
+	padding: 0;
+}
+
+.instructions {
+	background-color: #34302D;
 	color: #EDEAE3;
+	margin-left: 1em;
+	float: right;
+	width: 45%;
+	padding: 1em;
+}
+
+.instructions span {
+	display: block;
+	width: 100%;
+	border-bottom: 2px solid #86C543;
+}
+
+#footer-container {
 }

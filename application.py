@@ -75,9 +75,131 @@ def login_user():
     else:
         return '-1'
 
+@application.route('/mobile/login', methods=['POST'])
+def login_mobile_user():
+    if all (x in request.form for x in ('username', 'password')):
+        query = '''
+            SELECT K.key, U.salt, U.password FROM users U, api_keys K 
+            WHERE U.username=:username AND U.id=K.u_id;
+        '''
+        try:
+            tupl = db.session.execute(query, {
+                'username':request.form['username']
+            }).first()
+            if tupl:
+                key, salt, password = tupl
+                if(bcrypt.hashpw(request.form['password'], salt) == password):
+                    return key
+                else:
+                    #badpass
+                    return '0'
+            else:
+                #No username exists
+                return '0'
+        except:
+            #Error with the SQL requests
+            return '-1'
+    else:
+        #All post variables do not exist
+        return '-1'
+
 @application.route('/api/recipes', methods=['GET'])
 def get_recipes():
-    return '1'
+    data = []
+    query = '''
+        SELECT * FROM recipes
+    '''
+    try:
+        recipes = db.session.execute(query)
+        for _id, name, instructions, author in recipes:
+            data.append({
+                'id': _id,
+                'name': name,
+                'instructions': instructions,
+                'author': author
+            })
+        return json.dumps(data)
+    except:
+        return '-1'
+
+def create_recipe(username, data):
+    query = '''
+        INSERT INTO recipes 
+        VALUES(NULL, :name, :instructions, :author)
+    '''
+    query2 = '''
+        INSERT INTO ingredients
+        VALUES(NULL, :r_id, :name, :calories, :amount)
+    '''
+    try:
+        for recipe in data:
+            result = db.session.execute(query, {
+                'name': data['name'],
+                'instructions': data['instruction'],
+                'author': username
+            })
+            db.session.commit()
+            r_id = result.lastrowid
+            for ingredient in recipe['ingredients']:
+                result2 = db.session.execute(query2, {
+                    'r_id': r_id,
+                    'name': ingredient['name'],
+                    'calories': ingredient['calories'],
+                    'amount': ingredient['amount']
+                })
+                db.session.commit()
+        return 1
+    except:
+        return -1
+
+
+@application.route('/api/recipes', methods=['POST'])
+def upload_recipes():
+    if 'key' in request.args:
+        #return request.args['key']
+        query = '''
+            SELECT U.username
+            FROM users U, api_keys K
+            WHERE K.key=:key AND K.u_id=U.id
+        '''
+        data = json.loads(request.data)
+        try:
+            result = db.session.execute(query, {
+                'key': request.args['key']
+            }).first()
+            if result:
+                username = result.username
+                if create_recipe(username, data):
+                    return '1'
+                else: 
+                    return '-1'
+            else:
+                abort(401)
+        except:
+            return '-1'
+    else:
+        abort(401)
+
+@application.route('/api/ingredients/<recipe_id>')
+def get_recipe_ingredients(recipe_id):
+    data = []
+    query = '''
+        SELECT I.name, I.amount
+        FROM ingredients I, recipes R
+        WHERE I.r_id=:recipe_id AND I.r_id=R.id
+    '''
+    try:
+        ingredients = db.session.execute(query, {
+            'recipe_id': recipe_id
+        })
+        for name, amount in ingredients:
+            data.append({
+                'name': name,
+                'amount': amount
+            })
+        return json.dumps(data)
+    except:
+        return '-1'
 
 @application.route('/api/<search_term>', methods=['GET'])
 def get_ingredients(search_term):
