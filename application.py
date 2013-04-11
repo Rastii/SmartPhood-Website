@@ -134,8 +134,8 @@ def create_recipe(username, data):
     try:
         for recipe in data:
             result = db.session.execute(query, {
-                'name': data['name'],
-                'instructions': data['instruction'],
+                'name': recipe['name'],
+                'instructions': recipe['instruction'],
                 'author': username
             })
             db.session.commit()
@@ -156,7 +156,6 @@ def create_recipe(username, data):
 @application.route('/api/recipes', methods=['POST'])
 def upload_recipes():
     if 'key' in request.args:
-        #return request.args['key']
         query = '''
             SELECT U.username
             FROM users U, api_keys K
